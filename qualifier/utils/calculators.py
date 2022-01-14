@@ -1,5 +1,11 @@
-# -*- coding: utf-8 -*-
-"""A Collection of Financial Calculators.
+
+
+
+"""
+
+A Collection of Financial Calculators.
+
+
 
 This script contains a variety of financial calculator functions needed to
 determine loan qualifications.
@@ -8,7 +14,9 @@ determine loan qualifications.
 
 
 def calculate_monthly_debt_ratio(monthly_debt_payment, monthly_income):
-    """Calculates users monthly debt to income ratio.
+
+    """
+    Calculates users monthly debt to income ratio.
 
     Args:
         monthly_debt_payment (int): The total monthly debt.
@@ -17,12 +25,20 @@ def calculate_monthly_debt_ratio(monthly_debt_payment, monthly_income):
     Returns:
         The monthly debt ratio
     """
+
+    # monthly debt ratio equals monthly debt payment divided by monthly income
     monthly_debt_ratio = int(monthly_debt_payment) / int(monthly_income)
+
+    # Returns the montthly debt ratio
     return monthly_debt_ratio
 
 
+
+
 def calculate_loan_to_value_ratio(loan_amount, home_value):
-    """Calculates users loan to value ratio based on inputs.
+
+    """
+    Calculates users loan to value ratio based on inputs.
 
     Args:
         loan_amount (int): The requested loan amount.
@@ -31,5 +47,9 @@ def calculate_loan_to_value_ratio(loan_amount, home_value):
     Returns:
         The loan-to-value ratio.
     """
+
+    # loan to value ratio equals desired loan amount divided by home value
     loan_to_value_ratio = int(loan_amount) / int(home_value)
+
+    # Returns the loan to value ratio
     return loan_to_value_ratio

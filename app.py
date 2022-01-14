@@ -1,69 +1,111 @@
-# -*- coding: utf-8 -*-
-"""Loan Qualifier Application.
+
+
+
+"""
+
+Loan Qualifier Application.
+
+
 
 This is a command line application to match applicants with qualifying loans.
 
+
 Example:
     $ python app.py
+
 """
+
+# Set command line to conda dev environment: conda activate dev
+
+# Initial imports
+
 import csv
 import sys
 import fire
 import questionary
 from pathlib import Path
  
+# Helper functions for loading and saving csv files
 from qualifier.utils.fileio import load_csv, save_csv
 
+# A collection of financial calculators which determine loan eligability
 from qualifier.utils.calculators import (
     calculate_monthly_debt_ratio,
     calculate_loan_to_value_ratio,
 )
 
+# Filters for filtering a bank list by the user's inputs
 from qualifier.filters.max_loan_size import filter_max_loan_size
 from qualifier.filters.credit_score import filter_credit_score
 from qualifier.filters.debt_to_income import filter_debt_to_income
 from qualifier.filters.loan_to_value import filter_loan_to_value
 
 
+
+
+
 def load_bank_data():
-    """Ask for the file path to the latest banking data and load the CSV file.
+
+    """
+    Ask for the file path to the latest banking data and load the CSV file.
 
     Returns:
         The bank data from the data rate sheet CSV file.
     """
 
+    # Prompt user to input the initial bank list to be filtered
     csvpath = questionary.text("Enter a file path to a rate-sheet (.csv):").ask()
+
+    # Create path to file
     csvpath = Path(csvpath)
+
+    # Error message for an invalid file path
     if not csvpath.exists():
         sys.exit(f"Oops! Can't find this path: {csvpath}")
 
+    # Open path to file
     return load_csv(csvpath)
 
 
+
+
+
 def get_applicant_info():
-    """Prompt dialog to get the applicant's financial information.
+
+    """
+    Prompt dialog to get the applicant's financial information.
 
     Returns:
         Returns the applicant's financial information.
     """
 
+    # Prompt the user to type-in their data and create variables for these values
     credit_score = questionary.text("What's your credit score?").ask()
     debt = questionary.text("What's your current amount of monthly debt?").ask()
     income = questionary.text("What's your total monthly income?").ask()
     loan_amount = questionary.text("What's your desired loan amount?").ask()
     home_value = questionary.text("What's your home value?").ask()
 
+
+    # Convert the variables to integer and float types
     credit_score = int(credit_score)
     debt = float(debt)
     income = float(income)
     loan_amount = float(loan_amount)
     home_value = float(home_value)
 
+
+    # Return variables for user's data
     return credit_score, debt, income, loan_amount, home_value
 
 
+
+
+
 def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_value):
-    """Determine which loans the user qualifies for.
+    
+    """
+    Determine which loans the user qualifies for.
 
     Loan qualification criteria is based on:
         - Credit Score
@@ -84,13 +126,16 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
 
     """
 
+
     # Calculate the monthly debt ratio
     monthly_debt_ratio = calculate_monthly_debt_ratio(debt, income)
     print(f"The monthly debt to income ratio is {monthly_debt_ratio:.02f}")
 
+
     # Calculate loan to value ratio
     loan_to_value_ratio = calculate_loan_to_value_ratio(loan, home_value)
     print(f"The loan to value ratio is {loan_to_value_ratio:.02f}.")
+
 
     # Run qualification filters
     bank_data_filtered = filter_max_loan_size(loan, bank_data)
@@ -98,103 +143,83 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
     bank_data_filtered = filter_debt_to_income(monthly_debt_ratio, bank_data_filtered)
     bank_data_filtered = filter_loan_to_value(loan_to_value_ratio, bank_data_filtered)
 
+
+    # Notify user of how many loans they qualify for
     print(f"Found {len(bank_data_filtered)} qualifying loans")
 
+
+    # Return a list of banks willing to underwrite the loan
     return bank_data_filtered
 
 
+
+
+
 def save_qualifying_loans(qualifying_loans):
-    """Saves the qualifying loans to a CSV file.
+
+    """
+    Saves the qualifying loans to a CSV file.
+
     Args:
         qualifying_loans (list of lists): The qualifying bank loans.
+        confirm_csv (condition): A yes/no condition for if the user wants to export their csv file
+        cvsexportpath (file path): The file path that the user chooses to export to
+        
+    Returns: Saves a csv file to the file path of their choice
+
     """
-    # @TODO: Complete the usability dialog for savings the CSV Files.
-    # YOUR CODE HERE!
+   
 # Create a condition for if the user does not qualify for any loans
     if qualifying_loans == []:
         sys.exit("You do not currently qualify for any loans. Please try again at a later time.")
 
-# Give the user an option to export a csv file
+
+# Prompt user to confirm "Would you like to save your qualifying loans to a csv file?"
     else:
         confirm_csv = questionary.confirm("Would you like to save your qualifying loans to a csv file?").ask()
 
+
+
+# If statement for if user types "yes"
         if confirm_csv == True:
+
+            # Promt user to enter the file path to where they want to export to
             csvexportpath = questionary.text("What's the path to the folder you would like to export to?").ask()
+            
+            # Create an export path
             csvexportpath = Path(csvexportpath)
             
-            print(f"Your file was exported to {csvexportpath}. Thank you!")
+            # Give confirmation message to user
+            print(f"Your file was exported to: {csvexportpath}. Thank you!")
             
+            # Save the csv
             return save_csv(qualifying_loans)
-
-# questionary.confirm("Would you like to save your qualifying loans to a csv file?").ask()
-    if questionary.confirm("Would you like to save your qualifying loans to a csv file?").ask():
-        filename = questionary.text("What's the path to the folder you would like to export to?").ask()
-
-# questionary.path("What's the path to the folder you would like to export to?").ask()
-        # filepath = 'data/output/' + filename
-
-        # save_csv(filepath, qualifying_loans)
-        
-
-    # answer = questionary.text("Would you like to save your qualifying loans to a csv file? Type yes or no ").ask()
-    # message = "No csv file was generated."
-
-    # if answer == 'yes':
-    #     message = "A csv file is being generated..."
-
-    #     qualifying_loans = []
-
-    #     for loans in len(csvpath):
-    #         if loans["Max Loan"] >= 0:
-    #             qualifying_loans.append(loans)
-    #     print(qualifying_loans)
-        
-    #     
-    
-    #     csvexportpath = Path("qualifying_loans.csv")
-
-    #     with open(csvexportpath, "w", newline = '') as csvfile:
-    #         csvwriter = csv.writer(csvfile, delimiter = ",")
-        
-    #         csvwriter.writerow(header)
-
-    #     for loan in qualifying_loans:
-    #         csvwriter.writerow(loan.values())
-
-    # print(loan.values)
-    # # print(loan.keys())
-
-
-    # answer = questionary.text("Would you like to save your qualifying loans to a csv file? Type yes or no ").ask()
-    # message = "No csv file was generated."
-
-    # if answer == 'yes':
-    #     message = "A csv file is being generated..."
-
-    # if answer == 'no':
-    #     message = "No csv file was generated."
-
-    # print(message)
 
 
 
 
 def run():
-    """The main function for running the script."""
+
+    """
+    The main function for running the script.
+    """
 
     # Load the latest Bank data
     bank_data = load_bank_data()
 
+
     # Get the applicant's information
     credit_score, debt, income, loan_amount, home_value = get_applicant_info()
 
+
     # Find qualifying loans
     qualifying_loans = find_qualifying_loans(
-        bank_data, credit_score, debt, income, loan_amount, home_value
-    )
+        bank_data, credit_score, debt, income, loan_amount, home_value)
+
 
     # Save qualifying loans
     save_qualifying_loans(qualifying_loans)
+
 
 
 if __name__ == "__main__":
