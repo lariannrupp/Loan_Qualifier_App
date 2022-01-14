@@ -11,8 +11,8 @@ import sys
 import fire
 import questionary
 from pathlib import Path
-
-from qualifier.utils.fileio import load_csv
+ 
+from qualifier.utils.fileio import load_csv, save_csv
 
 from qualifier.utils.calculators import (
     calculate_monthly_debt_ratio,
@@ -123,6 +123,7 @@ def save_qualifying_loans(qualifying_loans):
             csvexportpath = Path(csvexportpath)
             
             print(f"Your file was exported to {csvexportpath}. Thank you!")
+            
             return save_csv(qualifying_loans)
 
 # questionary.confirm("Would you like to save your qualifying loans to a csv file?").ask()
@@ -130,9 +131,9 @@ def save_qualifying_loans(qualifying_loans):
         filename = questionary.text("What's the path to the folder you would like to export to?").ask()
 
 # questionary.path("What's the path to the folder you would like to export to?").ask()
-        filepath = 'data/output/' + filename
+        # filepath = 'data/output/' + filename
 
-        save_csv(filepath, qualifying_loans)
+        # save_csv(filepath, qualifying_loans)
         
 
     # answer = questionary.text("Would you like to save your qualifying loans to a csv file? Type yes or no ").ask()
@@ -170,10 +171,10 @@ def save_qualifying_loans(qualifying_loans):
     # if answer == 'yes':
     #     message = "A csv file is being generated..."
 
-    if answer == 'no':
-        message = "No csv file was generated."
+    # if answer == 'no':
+    #     message = "No csv file was generated."
 
-    print(message)
+    # print(message)
 
 
 
