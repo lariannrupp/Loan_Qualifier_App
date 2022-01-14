@@ -1,0 +1,50 @@
+   21  git add qualifying_loans.csv
+   22  git status
+   23  ls
+   24  python app.py
+   25  python app.py
+   26  pwd
+   27  git status
+   28  git add app.py
+   29  git add qualifier/filters/credit_score.py
+   30  git add qualifier/utils/calculators.py
+   31  git add qualifier/utils/fileio.py
+   32  git status
+   33  ls
+   34  cd data
+   35  ls
+   36  cd ..
+   37  cd ..
+   38  ls
+   39  cdLoan_Qualifier_App/  
+   40  cd Loan_Qualifier_App/  
+   41  ls
+   42  git add data/daily_rate_sheet.csv
+   43  cd qualifier
+   44  ls
+   45  cd filters
+   46  ls
+   47  cd ..
+   48  cd ..
+   49  ls
+   50  git add qualifier/filters/debt_to_income.py
+   51  git add qualifier/filters/loan_to_value.py
+   52  git add qualifier/filters/max_loan_size.py
+   53  ls
+   54  cd qualifier/
+   55  ls
+   56  cd filters/
+   57  ls
+   58  cd ..
+   59  cd utils/
+   60  ls
+   61  cd ..
+   62  cd ..
+   63  git add qualifier/utils/calculators.py
+   64  git add fileio.py
+   65  git add qualifier/utils/fileio.py
+   66  git status
+   67  git commit -m "Cleaned up code, formatting, and adding comments"
+   68  git push
+   69  git status
+   70  history 50 > terminal_history.txt
