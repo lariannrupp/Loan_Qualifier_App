@@ -9,7 +9,7 @@ The purpose of this app is for a user to input their financial data and filter a
 **Python 3.9.7** was used to write this application. 
 Additional Python libraries are imported into the start of the app: ***csv, sys, fire, questionary, and pathlib*
 
-![Technologies](![image](https://user-images.githubusercontent.com/95719899/149454450-dab69400-d5ee-401e-a234-14d23f650031.png)
+![Technologies]([image](https://user-images.githubusercontent.com/95719899/149454450-dab69400-d5ee-401e-a234-14d23f650031.png)
 
 ---
 
